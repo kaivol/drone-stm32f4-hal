@@ -68,7 +68,7 @@ impl<
 
     fn new_fib<R>(&self) -> impl Fiber<Input = (), Yield = Option<usize>, Return = R> {
         let exti_pr_pif = self.exti.exti_pr_pif;
-        fib::new_fn(move || {
+        let fib = fib::new_fn(move || {
             if exti_pr_pif.read_bit() {
                 // Selected trigger request occurred: clear pending flag
                 exti_pr_pif.set_bit();
@@ -76,7 +76,9 @@ impl<
             } else {
                 fib::Yielded(None)
             }
-        })
+        });
+        self.exti.exti_imr_im.set_bit(); // unmask interrupt request
+        fib
     }
 }
 
