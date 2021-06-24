@@ -1,6 +1,6 @@
 //! Drone OS peripheral drivers for STM32F4 micro-controllers.
 
-#![warn(missing_docs)]
+// #![warn(missing_docs)]
 #![warn(clippy::pedantic)]
 #![allow(clippy::doc_markdown)]
 #![no_std]
