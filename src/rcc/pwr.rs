@@ -1,4 +1,6 @@
-use crate::{traits::*, periph::PwrPeriph};
+#![allow(dead_code)]
+
+use crate::periph::PwrPeriph;
 use drone_cortexm::reg::prelude::*;
 
 pub struct Pwr {
@@ -20,7 +22,7 @@ impl Pwr {
     stm32_mcu = "stm32f429",
     stm32_mcu = "stm32f437",
 ))]
-impl Overdriveable for Pwr {
+impl crate::traits::Overdriveable for Pwr {
     fn enable_overdrive(&self) {
         // Enable the Over-drive mode and wait for the ODRDY flag to be set.
         self.pwr.pwr_cr.modify(|r| r.set_oden());
