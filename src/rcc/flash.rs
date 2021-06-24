@@ -37,6 +37,21 @@ impl HClkExt for HClk {
     }
 }
 
+// STM32F411
+#[cfg(any(stm32_mcu = "stm32f411"))]
+impl HClkExt for HClk {
+    fn get_wait_states(&self, voltage: VoltageRange) -> u32 {
+        // Table 5 in RM0383.
+        let upper = match voltage {
+            VoltageRange::HighVoltage => [30, 64, 90, 100].as_ref(),
+            VoltageRange::MediumVoltage => [24, 48, 72, 96, 100].as_ref(),
+            VoltageRange::LowVoltage => [18, 36, 54, 72, 90, 100].as_ref(),
+            VoltageRange::UltraLowVoltage => [16, 32, 48, 64, 80, 96, 100].as_ref(),
+        };
+        get_wait_states(self, upper)
+    }
+}
+
 // STM32F42xxx and STM32F43xxx
 #[cfg(any(
     stm32_mcu = "stm32f427",
